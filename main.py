@@ -13,7 +13,6 @@ import pandas as pd
 # taxis.to_pickle('./data/taxis.pkl')
 
 # traffic = pd.read_csv('./data/Automated_Traffic_Volume_Counts.csv')
-# traffic = traffic.drop(columns=['SegmentID', 'Vol', 'Boro','RequestID'])
 # traffic = traffic[traffic['Yr'] == 2015]
 
 # df = pd.DataFrame({'year': traffic['Yr'],
@@ -23,6 +22,7 @@ import pandas as pd
 #                    'minute': traffic['MM']})
 
 # traffic['date'] = pd.to_datetime(df)
+# traffic = traffic.drop(columns=['SegmentID', 'Vol', 'Boro','RequestID', 'Yr', 'M', 'D', 'HH', 'MM'])
 
 # traffic.to_pickle('./data/traffic.pkl')
 
@@ -30,7 +30,7 @@ import pandas as pd
 
 traffic = pd.read_pickle('./data/traffic.pkl')
 
-traffic_hours_count = traffic.groupby(['Yr', 'M', 'D', 'HH', 'MM'])
+traffic_hours_count = traffic.groupby(['date'])
 counts = traffic_hours_count.count()
 chosen_traffics = counts[counts['street'] > 100]
 
@@ -40,11 +40,11 @@ chosen_traffics.to_pickle('./data/chosen_traffics.pkl')
 taxis = pd.read_pickle('./data/taxis.pkl')
 
 n_taxis = 1000000
-bias = pd.Timedelta(minutes=31)
-taxis_temp = taxis['pickup_date'][0:n_taxis]
-indices = pd.Series([False]*len(taxis_temp))
-for g in pd.to_datetime([f"{t[0]} {t[1]} {t[2]} {t[3]} {t[4]}" for t in chosen_traffics.index], format="%Y %m %d %H %M"):
-    indices = indices | ((g - taxis_temp).abs() < bias)
+time_bias = pd.Timedelta(minutes=31)
+taxi_pickups = taxis['pickup_date'][0:n_taxis]
+indices = pd.Series([False]*len(taxi_pickups))
+for traffic_timestamp in chosen_traffics.index:
+    indices = indices | ((traffic_timestamp - taxi_pickups).abs() < time_bias)
 
 chosen_taxis = taxis[0:n_taxis][indices]
 chosen_taxis.to_pickle('./data/chosen_taxis.pkl')
