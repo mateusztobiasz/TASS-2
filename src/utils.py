@@ -5,6 +5,7 @@ N_TAXIS = 1000000
 TAXIS_CSV = f"{DATA_DIR}/2015_Green_Taxi_Trip_Data_20250106.csv"
 TAXIS_PICKLE = f"{DATA_DIR}/taxis.pkl"
 TAXIS_CHOSEN_PICKLE = f"{DATA_DIR}/chosen_taxis.pkl"
+TAXIS_STEPS_PICKLE = f"{DATA_DIR}/steps_taxis.pkl"
 TRAFFICS_CHOSEN_PICKLE = f"{DATA_DIR}/chosen_traffics.pkl"
 TRAFFIC_COUNT = 100
 TRAFFICS_CSV = f"{DATA_DIR}/Automated_Traffic_Volume_Counts.csv"
