@@ -47,20 +47,22 @@ def extract_taxi_path(taxi_coordinate: Tuple[Tuple[float]], index: int) -> list:
 
 
 if __name__ == "__main__":
-    taxis_coordinates = get_taxis_coordinates()
+    # taxis_coordinates = get_taxis_coordinates()
 
-    i = 0
-    taxis_steps = []
-    for coordinates in taxis_coordinates:
-        taxis_steps.append(extract_taxi_path(coordinates, i))
-        i = i + 1
-        if i == 300: # API is limited to 300 request per minute
-            i = 0
-            print('waiting...')
-            time.sleep(61)
+    # i = 0
+    # taxis_steps = []
+    # for coordinates in taxis_coordinates:
+    #     taxis_steps.append(extract_taxi_path(coordinates, i))
+    #     i = i + 1
+    #     if i == 300: # API is limited to 300 request per minute
+    #         i = 0
+    #         print('waiting...')
+    #         time.sleep(61)
 
-    with open(TAXIS_STEPS_PICKLE, 'wb') as f:
-        pkl.dump(taxis_steps, f)
+    # with open(TAXIS_STEPS_PICKLE, 'wb') as f:
+    #     pkl.dump(taxis_steps, f)
 
-    # with open(TAXIS_STEPS_PICKLE, 'rb') as f:
-    #     mynewlist = pkl.load(f)
+    with open(TAXIS_STEPS_PICKLE, 'rb') as f:
+        taxis_steps = pkl.load(f)
+
+    
