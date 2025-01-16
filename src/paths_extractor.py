@@ -5,7 +5,7 @@ import pickle as pkl
 import time
 
 from src.api_requester import send_request
-from src.utils import TAXIS_CHOSEN_PICKLE, TAXIS_STEPS_PICKLE
+from src.utils import TAXIS_CHOSEN_PICKLE, TAXIS_STEPS_PICKLE, TRAFFICS_PICKLE
 
 
 def get_taxis_coordinates() -> Iterator:
@@ -45,6 +45,27 @@ def extract_taxi_path(taxi_coordinate: Tuple[Tuple[float]], index: int) -> list:
 
     return json_response["matchings"][0]["legs"][0]["steps"]
 
+def normalize_street(streets: list) -> list:
+    return [s.lower()
+            # .replace('road', '')
+            # .replace('highway', '')
+            # .replace('expressway', '')
+            # .replace('avenue', '')
+            # .replace('street', '')
+            .replace('1st', '1')
+            .replace('2nd', '2')
+            .replace('3rd', '3')
+            .replace('1th', '1')
+            .replace('2th', '2')
+            .replace('3th', '3')
+            .replace('4th', '4')
+            .replace('5th', '5')
+            .replace('6th', '6')
+            .replace('7th', '7')
+            .replace('8th', '8')
+            .replace('9th', '9')
+            .replace('0th', '0')
+            .replace(' ', '') for s in streets]
 
 if __name__ == "__main__":
     # taxis_coordinates = get_taxis_coordinates()
@@ -65,4 +86,13 @@ if __name__ == "__main__":
     with open(TAXIS_STEPS_PICKLE, 'rb') as f:
         taxis_steps = pkl.load(f)
 
+    taxis_streets = []
+    for route in taxis_steps:
+        for element in route:
+            if 'name' in element and element['name'] != "":
+                taxis_streets.append(element['name'])
+    taxis_streets = normalize_street(taxis_streets)
+
+    traffic = pd.read_pickle(TRAFFICS_PICKLE)
+    traffic_streets = normalize_street(traffic.groupby(["street"]).groups.keys())
     
