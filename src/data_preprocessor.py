@@ -19,7 +19,7 @@ def preprocess_traffics() -> None:
 
     traffic["date"] = pd.to_datetime(df)
     traffic = traffic.drop(
-        columns=["SegmentID", "Vol", "Boro", "RequestID", "Yr", "M", "D", "HH", "MM"]
+        columns=["SegmentID", "Boro", "RequestID", "Yr", "M", "D", "HH", "MM"]
     )
 
     traffic.to_pickle(TRAFFICS_PICKLE)

@@ -13,10 +13,10 @@ if __name__ == "__main__":
         for element in route:
             if 'name' in element and element['name'] != "":
                 taxis_streets.append(element['name'])
-    taxis_streets = normalize_street(taxis_streets)
+    taxis_streets = [normalize_street(s) for s in taxis_streets]
 
     traffic = pd.read_pickle(TRAFFICS_PICKLE)
-    traffic_streets = normalize_street(traffic.groupby(["street"]).groups.keys())
+    traffic_streets = set([normalize_street(s) for s in traffic.groupby(["street"]).groups.keys()])
 
     # Count how many entries from taxis are covered by traffic dataset
     i = 0
