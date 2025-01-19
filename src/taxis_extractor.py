@@ -26,12 +26,12 @@ def extract_matched_taxis() -> None:
     taxis = pd.read_pickle(TAXIS_PICKLE)
 
     time_bias = pd.Timedelta(minutes=MINUTES_THRESHOLD)
-    taxi_pickups = taxis["pickup_date"][0:N_TAXIS]
+    taxi_pickups = taxis["pickup_date"]
     indices = pd.Series([False] * len(taxi_pickups))
     for traffic_timestamp in chosen_traffics.index:
         indices = indices | ((traffic_timestamp - taxi_pickups).abs() < time_bias)
 
-    chosen_taxis = taxis[0:N_TAXIS][indices]
+    chosen_taxis = taxis[indices]
     chosen_taxis.to_pickle(TAXIS_CHOSEN_PICKLE)
 
 

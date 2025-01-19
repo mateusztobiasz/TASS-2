@@ -1,4 +1,6 @@
 black
+matplotlib
+numpy
 isort
 pandas
 python-dotenv

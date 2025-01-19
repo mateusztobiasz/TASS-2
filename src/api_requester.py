@@ -26,10 +26,3 @@ def send_request(coordinates: Tuple[Tuple[float]], **kwargs) -> requests.Respons
     response = requests.get(url, params=kwargs)
 
     return response
-
-
-# if __name__ == "__main__":
-#     coordinates = [(34.596, -23.46), (34.597, -23.46)]
-#     response = send_request(
-#         coordinates=coordinates, steps="true", access_token=get_public_token()
-#     )
